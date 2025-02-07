@@ -1,15 +1,108 @@
-<!-- TODO 1: Create the HTML Boilerplate -->
+<class Supermarket:
+    def __init__(self):
+        self.products = []
 
-<!-- TODO 2: Add Your previous projects' HTML into the public folder -->
+    def add_product(self, name, price, quantity):
+        product = {
+            "name": name,
+            "price": price,
+            "quantity": quantity
+        }
+        self.products.append(product)
+        print(f"تمت إضافة المنتج: {name}")
 
-<!-- TODO 3: Take screenshots of your project previews and add the images to the images folder -->
+    def display_products(self):
+        if not self.products:
+            print("لا توجد منتجات مسجلة.")
+            return
 
-<!-- TODO 4: Add titles/subtitles etc. -->
+        print("\nقائمة المنتجات:")
+        for idx, product in enumerate(self.products, start=1):
+            print(f"{idx}. الاسم: {product['name']}, السعر: {product['price']} دينار, الكمية: {product['quantity']}")
 
-<!-- TODO 5: Add a link to the project pages -->
+    def update_product(self, product_id, new_name=None, new_price=None, new_quantity=None):
+        if product_id < 1 or product_id > len(self.products):
+            print("رقم المنتج غير صحيح!")
+            return
 
-<!-- TODO 6: Add images to show the project previews
-HINT for TODO 6: You can use the height attribute set to 200 to make the image smaller:
-https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#attr-height -->
+        product = self.products[product_id - 1]
+        if new_name:
+            product['name'] = new_name
+        if new_price:
+            product['price'] = new_price
+        if new_quantity:
+            product['quantity'] = new_quantity
+        print(f"تم تحديث المنتج: {product['name']}")
 
-<!-- TODO 7: Add the Contact Me and About Me page links -->
+    def delete_product(self, product_id):
+        if product_id < 1 or product_id > len(self.products):
+            print("رقم المنتج غير صحيح!")
+            return
+
+        deleted_product = self.products.pop(product_id - 1)
+        print(f"تم حذف المنتج: {deleted_product['name']}")
+
+    def search_product(self, name):
+        found_products = [product for product in self.products if name.lower() in product['name'].lower()]
+        if not found_products:
+            print("لم يتم العثور على منتج بهذا الاسم.")
+            return
+
+        print("\nنتائج البحث:")
+        for idx, product in enumerate(found_products, start=1):
+            print(f"{idx}. الاسم: {product['name']}, السعر: {product['price']} دينار, الكمية: {product['quantity']}")
+
+def main():
+    supermarket = Supermarket()
+
+    while True:
+        print("\n--- نظام إدارة السوبر ماركت ---")
+        print("1. إضافة منتج")
+        print("2. عرض المنتجات")
+        print("3. تحديث منتج")
+        print("4. حذف منتج")
+        print("5. البحث عن منتج")
+        print("6. الخروج")
+
+        choice = input("اختر رقم القائمة: ")
+
+        if choice == "1":
+            name = input("اسم المنتج: ")
+            price = float(input("سعر المنتج (دينار): "))
+            quantity = int(input("الكمية المتوفرة: "))
+            supermarket.add_product(name, price, quantity)
+
+        elif choice == "2":
+            supermarket.display_products()
+
+        elif choice == "3":
+            supermarket.display_products()
+            product_id = int(input("رقم المنتج الذي تريد تحديثه: "))
+            new_name = input("الاسم الجديد (اتركه فارغًا إذا لم تريد التغيير): ")
+            new_price = input("السعر الجديد (اتركه فارغًا إذا لم تريد التغيير): ")
+            new_quantity = input("الكمية الجديدة (اتركه فارغًا إذا لم تريد التغيير): ")
+            supermarket.update_product(
+                product_id,
+                new_name if new_name else None,
+                float(new_price) if new_price else None,
+                int(new_quantity) if new_quantity else None
+            )
+
+        elif choice == "4":
+            supermarket.display_products()
+            product_id = int(input("رقم المنتج الذي تريد حذفه: "))
+            supermarket.delete_product(product_id)
+
+        elif choice == "5":
+            name = input("اسم المنتج الذي تبحث عنه: ")
+            supermarket.search_product(name)
+
+        elif choice == "6":
+            print("تم الخروج من النظام. شكرًا لاستخدامك!")
+            break
+
+        else:
+            print("اختيار غير صحيح! الرجاء المحاولة مرة أخرى.")
+
+if __name__ == "__main__":
+    main()
